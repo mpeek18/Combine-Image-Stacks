@@ -7,6 +7,7 @@ Last Modified:  November 2018
 All Fields Image Stack
 """
 import numpy as np
+from scipy import stats
 from astropy.io import ascii
 import astropy.io.fits as fits
 import scipy.ndimage as ndimage
@@ -446,11 +447,28 @@ for i in range(0, len(fieldList)):
     except IOError:
         print ("File not found!")
     
-print (absorberObjID,'\n')
+#print (absorberObjID,'\n')
 print (absorberRedshift,'\n')
-print (nonAbsorberObjID,'\n')
-print (nonAbsorberRedshift,'\n')       
-    
-    
+#print (nonAbsorberObjID,'\n')
+print (nonAbsorberRedshift,'\n')
+
+
+print("---------------------------------------------------------------------------")
+print("Statistics",'\n')
+"""
+Perform statistics on absorber redshifts vs. non-absorber redshifts.
+"""       
+print(stats.ks_2samp(absorberRedshift, nonAbsorberRedshift),'\n')
+ 
+print("---------------------------------------------------------------------------")
+"""
+Histogram plots for absorber/non-absorber redshifts.
+"""
+absorberBinArray = np.linspace(0, 5, 10)
+nonAbsorberBinArray = np.linspace(0, 1.5, 10)
+plt.hist(absorberRedshift, bins=absorberBinArray, density=True, histtype='step', label='MgII Detection (%i)' %len(absorberRedshift))
+plt.hist(nonAbsorberRedshift, bins=nonAbsorberBinArray, density=True, histtype='step', label='MgII Detection (%i)' %len(nonAbsorberRedshift))   
+plt.legend()
+plt.show()    
     
 
