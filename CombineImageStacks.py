@@ -348,6 +348,57 @@ def stackStandardNonAbsorb(fileListStandardNonAbsorb):
     print ("stackStandardNonAbsorb Function Complete!")
 #End stackStandardNonAbsorb function
     
+def brightnessProfile(imageName, redshift, wavelength):
+    image = fits.open(imageName)
+    newData = image[0].data
+    
+
+    
+# =============================================================================
+# Read in field absorber files for plots with selected columns
+# =============================================================================
+fieldList = [1, 2, 3, 4, 5, 7, 8, 9]
+absorberObjID = []
+absorberRedshift = []
+nonAbsorberObjID = []
+wavelengthAbsorb = []
+nonAbsorberRedshift = []
+wavelengthNonAbsorb = []
+for i in range(0, len(fieldList)):
+    try:
+        fileAbsorb = ascii.read('Field' + str(fieldList[i]) + '_Stack_Data_Absorb.dat', delimiter='|')
+        absorbObjID = fileAbsorb['col2']
+        absorbObjRedshift = fileAbsorb['col3']
+        absorbWavelength = fileAbsorb['col4']
+        
+        for i in range(1, len(absorbObjID)):     
+            absorberObjID.append(absorbObjID[i])
+            wavelengthAbsorb.append(absorbWavelength[i])
+            absorberRedshift.append(absorbObjRedshift[i])
+            
+    except IOError:
+        print ("File not found!")
+
+for i in range(0, len(fieldList)):
+    try:        
+        fileNonAbsorb = ascii.read('Field' + str(fieldList[i]) + '_Stack_Data_NonAbsorb.dat', delimiter='|')
+        nonAbsorbObjID = fileNonAbsorb['col2']
+        nonAbsorbObjRedshift = fileNonAbsorb['col3']
+        nonAbsorbWavelength = fileNonAbsorb['col4']
+        
+        for i in range(1, len(nonAbsorbObjID)):
+            nonAbsorberObjID.append(nonAbsorbObjID[i])
+            wavelengthNonAbsorb.append(nonAbsorbWavelength[i])
+            nonAbsorberRedshift.append(nonAbsorbObjRedshift[i])
+    
+    except IOError:
+        print ("File not found!")
+    
+#print (absorberObjID,'\n')
+print (absorberRedshift,'\n')
+#print (nonAbsorberObjID,'\n')
+print (nonAbsorberRedshift,'\n')
+    
 # =============================================================================
 # Program's 'main'. Begin reading in all images for stacking.
 # =============================================================================
@@ -412,47 +463,12 @@ stackMeanNonAbsorb(fileListMeanNonAbsorb)
 stackMedianNonAbsorb(fileListMedianNonAbsorb)
 stackStandardAbsorb(fileListStandardAbsorb)
 stackStandardNonAbsorb(fileListStandardNonAbsorb)
+#End program 'main' section
+
 
 # =============================================================================
-# Read in field absorber files and begin plots for selected columns
+# Begin section for ks statistics and plots.
 # =============================================================================
-fieldList = [1, 2, 3, 4, 5, 7, 8, 9]
-absorberObjID = []
-absorberRedshift = []
-nonAbsorberObjID = []
-nonAbsorberRedshift = []
-for i in range(0, len(fieldList)):
-    try:
-        fileAbsorb = ascii.read('Field' + str(fieldList[i]) + '_Stack_Data_Absorb.dat', delimiter='|')
-        absorbObjID = fileAbsorb['col2']
-        absorbObjRedshift = fileAbsorb['col3']
-        
-        for i in range(1, len(absorbObjID)):     
-            absorberObjID.append(absorbObjID[i])
-            absorberRedshift.append(absorbObjRedshift[i])
-            
-    except IOError:
-        print ("File not found!")
-
-for i in range(0, len(fieldList)):
-    try:        
-        fileNonAbsorb = ascii.read('Field' + str(fieldList[i]) + '_Stack_Data_NonAbsorb.dat', delimiter='|')
-        nonAbsorbObjID = fileNonAbsorb['col2']
-        nonAbsorbObjRedshift = fileNonAbsorb['col3']
-        
-        for i in range(1, len(nonAbsorbObjID)):
-            nonAbsorberObjID.append(nonAbsorbObjID[i])
-            nonAbsorberRedshift.append(nonAbsorbObjRedshift[i])
-    
-    except IOError:
-        print ("File not found!")
-    
-#print (absorberObjID,'\n')
-print (absorberRedshift,'\n')
-#print (nonAbsorberObjID,'\n')
-print (nonAbsorberRedshift,'\n')
-
-
 print("---------------------------------------------------------------------------")
 print("Statistics",'\n')
 """
