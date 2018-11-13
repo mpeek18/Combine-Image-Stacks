@@ -3,7 +3,7 @@
 Created on Tue May 29 21:05:05 2018
 
 @author: Matthew Peek
-Last Modified:  November 2018
+Last Modified: 13 November 2018
 All Fields Image Stack
 """
 import numpy as np
@@ -12,6 +12,8 @@ from astropy.io import ascii
 import astropy.io.fits as fits
 import scipy.ndimage as ndimage
 from matplotlib import pyplot as plt
+from photutils import CircularAnnulus
+from photutils import CircularAperture, aperture_photometry
     
 """
 StackAll function, takes numpy array as argument, loops through array argument
@@ -350,7 +352,51 @@ def stackStandardNonAbsorb(fileListStandardNonAbsorb):
     
 def brightnessProfile(imageName, redshift, wavelength):
     image = fits.open(imageName)
-    newData = image[0].data
+    newData, header = image[0].data, image[0].header
+    imageHeight = header['NAXIS2']
+    hAlphaWavelength = 6563 #Angstroms
+    xAxisMin = 0
+    xAxisMax = 0
+    
+    hAlphaGal = hAlphaWavelength * (redshift+1)
+    print ("H-Alpha:", hAlphaGal)
+    for i in range(0, len(wavelength)):
+        if (abs(wavelength[i] - hAlphaGal) < 800):
+            if (xAxisMin == 0):
+                xAxisMin = i
+            else:
+                xAxisMax = i
+            #print ("H-Alpha Wavelength: ", wavelength[m], " Index: ", m)
+        print ("XMIN ", xAxisMin)
+        print ("XMAX ", xAxisMax)
+        print()       
+    newImage = newData[:,xAxisMin:xAxisMax]
+    
+    #Begin placing aperture and annulus
+    xAxis = (xAxisMax - xAxisMin) / 2 #Center point X-axis
+    yAxis = imageHeight / 2             #Center point Y-axis
+    positions = [(xAxis, yAxis)]      #Center point plotted
+    aperture = CircularAperture(positions, r=1)
+    phot_table_ap = aperture_photometry(newImage, aperture)
+    r_in = np.linspace(1, 11, 110)   #Inner radii per pixel
+    r_out = np.linspace(2, 12, 120)  #Outer radii per pixel
+    
+    fluxArray = [phot_table_ap['aperture_sum'] / aperture.area()]
+    radArray = [1]
+    for i in range(0, len(r_in)):
+        rIn = r_in[i]
+        rOut = r_out[i]
+        annulus_apertures = CircularAnnulus(positions, rIn, rOut)
+        phot_table = aperture_photometry(newImage, annulus_apertures)
+        fluxArray.append(phot_table['aperture_sum'] / annulus_apertures.area())
+        rMean = (rOut + rIn) / 2
+        radArray.append(rMean)
+    sumFlux = sum(fluxArray)
+
+    #Plot flux as radius increases
+    plt.clf()
+    plt.plot(radArray, fluxArray)
+    plt.show()          
     
 
     
@@ -428,7 +474,7 @@ for i in range(0, len(galList)):
         fileNameMedianAbsorb = 'Field' + str(galList[i]) + '_Stacked_Image_Median_Normed_Absorber.fits'
         fileNameMeanNonAbsorb = 'Field' + str(galList[i]) + '_Stacked_Image_Mean_Normed_NonAbsorber.fits'
         fileNameMedianNonAbsorb = 'Field' + str(galList[i]) + '_Stacked_Image_Median_Normed_NonAbsorber.fits'
-               
+                 
         #Append normalized image to fileList to pass as argument to stack function.
         fileListAll.append(fileNameAll)
         fileListMeanAll.append(fileMeanAll)
@@ -480,11 +526,12 @@ print("-------------------------------------------------------------------------
 """
 Histogram plots for absorber/non-absorber redshifts.
 """
-absorberBinArray = np.linspace(0, 5, 10)
-nonAbsorberBinArray = np.linspace(0, 1.5, 10)
+absorberBinArray = np.linspace(.65, 1.7, 10)
+nonAbsorberBinArray = np.linspace(.65, 1.7, 10)
 plt.hist(absorberRedshift, bins=absorberBinArray, density=True, histtype='step', label='MgII Detection (%i)' %len(absorberRedshift))
-plt.hist(nonAbsorberRedshift, bins=nonAbsorberBinArray, density=True, histtype='step', label='MgII Detection (%i)' %len(nonAbsorberRedshift))   
+plt.hist(nonAbsorberRedshift, bins=nonAbsorberBinArray,  density=True, histtype='step', label='MgII Detection (%i)' %len(nonAbsorberRedshift))   
 plt.legend()
+plt.savefig('Redshift Histogram.png')
 plt.show()    
     
 
