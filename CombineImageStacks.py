@@ -6,6 +6,7 @@ Created on Tue May 29 21:05:05 2018
 Last Modified: 13 November 2018
 All Fields Image Stack
 """
+import math
 import numpy as np
 from scipy import stats
 from astropy.io import ascii
@@ -420,7 +421,7 @@ for i in range(0, len(fieldList)):
         for i in range(1, len(absorbObjID)):     
             absorberObjID.append(absorbObjID[i])
             wavelengthAbsorb.append(absorbWavelength[i])
-            absorberRedshift.append(absorbObjRedshift[i])
+            absorberRedshift.append(float(absorbObjRedshift[i]))
             
     except IOError:
         print ("File not found!")
@@ -435,7 +436,7 @@ for i in range(0, len(fieldList)):
         for i in range(1, len(nonAbsorbObjID)):
             nonAbsorberObjID.append(nonAbsorbObjID[i])
             wavelengthNonAbsorb.append(nonAbsorbWavelength[i])
-            nonAbsorberRedshift.append(nonAbsorbObjRedshift[i])
+            nonAbsorberRedshift.append(float(nonAbsorbObjRedshift[i]))
     
     except IOError:
         print ("File not found!")
@@ -526,6 +527,14 @@ print("-------------------------------------------------------------------------
 """
 Histogram plots for absorber/non-absorber redshifts.
 """
+print ("Absorber:", absorberRedshift,'\n')
+print ("Non-Absorber:", nonAbsorberRedshift)
+print ("Mean Absorber:", np.mean(absorberRedshift))
+print ("Median Absorber:", np.median(absorberRedshift))
+print ("Mean non-absorber:", np.mean(nonAbsorberRedshift))
+print ("Median non-absorber:", np.median(nonAbsorberRedshift))
+print ("stdv mean:", np.std(absorberRedshift))
+
 absorberBinArray = np.linspace(.65, 1.7, 10)
 nonAbsorberBinArray = np.linspace(.65, 1.7, 10)
 plt.hist(absorberRedshift, bins=absorberBinArray, density=True, histtype='step', label='MgII Detection (%i)' %len(absorberRedshift))
