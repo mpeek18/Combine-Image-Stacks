@@ -3,7 +3,7 @@
 Created on Tue May 29 21:05:05 2018
 
 @author: Matthew Peek
-Last Modified: 13 November 2018
+Last Modified: 23 November 2018
 All Fields Image Stack
 """
 import math
@@ -164,6 +164,7 @@ def stackMeanAbsorb(fileListMeanAbsorb):
     plt.show()
     
     print ("stackMeanAbsorb Function Complete!")
+    return meanAbsorbImage
 #End stackMeanAbsorb function
     
     
@@ -201,6 +202,7 @@ def stackMeanNonAbsorb(fileListMeanNonAbsorb):
     plt.show()
     
     print ("stackMeanNonAbsorb Function Complete!")
+    return meanNonAbsorbImage
 #End stackMeanNonAbsorb function
 
     
@@ -351,6 +353,109 @@ def stackStandardNonAbsorb(fileListStandardNonAbsorb):
     print ("stackStandardNonAbsorb Function Complete!")
 #End stackStandardNonAbsorb function
     
+    
+"""
+reduceMeanImageStack function takes mean stacked absorber and mean stacked
+non-absorber images as parameters. Subtracts noise out by finding difference
+between the two. Writes reduced image to new fits file and makes .png image
+with Gaussian blur applied.
+"""
+def reduceMeanImageStack(imageAbsorb, imageNonAbsorb):
+    absorber = fits.getdata(imageAbsorb)
+    nonAbsorber = fits.getdata(imageNonAbsorb)
+    reduced = abs(absorber - nonAbsorber)
+    fits.writeto('Reduced_Mean.fits', reduced, overwrite=True)
+    
+    plt.clf()
+    plt.imshow(reduced)
+    plt.savefig('Reduced_Mean', dpi=100)
+    plt.subplots_adjust(right=2.0)
+    plt.subplots_adjust(top=1.0)
+    plt.colorbar()
+    plt.show()
+
+    #Gaussian Blur
+    plt.clf()
+    betterImage = ndimage.gaussian_filter(reduced, sigma=(2,2), order=0)
+    plt.imshow(betterImage)
+    plt.savefig('Reduced_Mean_Blur', dpi=100)
+    plt.subplots_adjust(right=2.0)
+    plt.subplots_adjust(top=1.0)
+    plt.colorbar()
+    plt.show()
+    
+    print ("Substract Mean Images Complete!")
+#End reduceMeanImageStack function  
+    
+
+"""
+reduceMedianImageStack function takes mean stacked absorber and mean stacked
+non-absorber images as parameters. Subtracts noise out by finding difference
+between the two. Writes reduced image to new fits file and makes .png image
+with Gaussian blur applied.
+"""
+def reduceMedianImageStack(imageAbsorb, imageNonAbsorb):
+    absorber = fits.getdata(imageAbsorb)
+    nonAbsorber = fits.getdata(imageNonAbsorb)
+    reduced = abs(absorber - nonAbsorber)
+    fits.writeto('Reduced_Median.fits', reduced, overwrite=True)
+    
+    plt.clf()
+    plt.imshow(reduced)
+    plt.savefig('Reduced_Median', dpi=100)
+    plt.subplots_adjust(right=2.0)
+    plt.subplots_adjust(top=1.0)
+    plt.colorbar()
+    plt.show()
+
+    #Gaussian Blur
+    plt.clf()
+    betterImage = ndimage.gaussian_filter(reduced, sigma=(2,2), order=0)
+    plt.imshow(betterImage)
+    plt.savefig('Reduced_Median_Blur', dpi=100)
+    plt.subplots_adjust(right=2.0)
+    plt.subplots_adjust(top=1.0)
+    plt.colorbar()
+    plt.show()
+    
+    print ("Substract Median Images Complete!")
+#End reduceMedianImageStack function  
+    
+
+"""
+reduceStandardImageStack function takes mean stacked absorber and mean stacked
+non-absorber images as parameters. Subtracts noise out by finding difference
+between the two. Writes reduced image to new fits file and makes .png image
+with Gaussian blur applied.
+"""
+def reduceStandardImageStack(imageAbsorb, imageNonAbsorb):
+    absorber = fits.getdata(imageAbsorb)
+    nonAbsorber = fits.getdata(imageNonAbsorb)
+    reduced = abs(absorber - nonAbsorber)
+    fits.writeto('Reduced_Standard.fits', reduced, overwrite=True)
+    
+    plt.clf()
+    plt.imshow(reduced)
+    plt.savefig('Reduced_Standard', dpi=100)
+    plt.subplots_adjust(right=2.0)
+    plt.subplots_adjust(top=1.0)
+    plt.colorbar()
+    plt.show()
+
+    #Gaussian Blur
+    plt.clf()
+    betterImage = ndimage.gaussian_filter(reduced, sigma=(2,2), order=0)
+    plt.imshow(betterImage)
+    plt.savefig('Reduced_Standard_Blur', dpi=100)
+    plt.subplots_adjust(right=2.0)
+    plt.subplots_adjust(top=1.0)
+    plt.colorbar()
+    plt.show()
+    
+    print ("Substract Standard Images Complete!")
+#End reduceStandardImageStack function  
+    
+"""
 def brightnessProfile(imageName, redshift, wavelength):
     image = fits.open(imageName)
     newData, header = image[0].data, image[0].header
@@ -398,7 +503,7 @@ def brightnessProfile(imageName, redshift, wavelength):
     plt.clf()
     plt.plot(radArray, fluxArray)
     plt.show()          
-    
+"""    
 
     
 # =============================================================================
@@ -504,29 +609,37 @@ print (len(fileListStandardNonAbsorb))
 stackAll(fileListAll)
 stackMeanAll(fileListMeanAll)
 stackMedianAll(fileListMedianAll)
-stackMeanAbsorb(fileListMeanAbsorb)
+meanAbsorbImage = stackMeanAbsorb(fileListMeanAbsorb)
 stackMedianAbsorb(fileListMedianAbsorb)
-stackMeanNonAbsorb(fileListMeanNonAbsorb)
+meanNonAbsorbImage = stackMeanNonAbsorb(fileListMeanNonAbsorb)
 stackMedianNonAbsorb(fileListMedianNonAbsorb)
 stackStandardAbsorb(fileListStandardAbsorb)
 stackStandardNonAbsorb(fileListStandardNonAbsorb)
 #End program 'main' section
 
+# =============================================================================
+# Read in combined image stacks and pass as parameters to reduction functions.
+# =============================================================================
+reduceMeanImageStack('Stacked_Image_Mean_Absorb.fits', 'Stacked_Image_Mean_NonAbsorb.fits')
+reduceMedianImageStack('Stacked_Image_Median_Absorb.fits', 'Stacked_Image_Median_NonAbsorb.fits')
+reduceStandardImageStack('Stacked_Image_Standard_Absorb.fits', 'Stacked_Image_Standard_NonAbsorb.fits')
 
 # =============================================================================
 # Begin section for ks statistics and plots.
 # =============================================================================
-print("---------------------------------------------------------------------------")
-print("Statistics",'\n')
+print ("---------------------------------------------------------------------------")
+print ("Statistics",'\n')
 """
 Perform statistics on absorber redshifts vs. non-absorber redshifts.
 """       
-print(stats.ks_2samp(absorberRedshift, nonAbsorberRedshift),'\n')
+print ("Redshifts Absorber/Non-Absorber")
+print (stats.ks_2samp(absorberRedshift, nonAbsorberRedshift),'\n')
+
+print ("Mean Stacks Absorber/Non-Absorber")
+print (stats.ks_2samp(np.concatenate(meanAbsorbImage), np.concatenate(meanNonAbsorbImage)))
  
 print("---------------------------------------------------------------------------")
-"""
-Histogram plots for absorber/non-absorber redshifts.
-"""
+
 print ("Absorber:", absorberRedshift,'\n')
 print ("Non-Absorber:", nonAbsorberRedshift)
 print ("Mean Absorber:", np.mean(absorberRedshift))
@@ -535,6 +648,9 @@ print ("Mean non-absorber:", np.mean(nonAbsorberRedshift))
 print ("Median non-absorber:", np.median(nonAbsorberRedshift))
 print ("stdv mean:", np.std(absorberRedshift))
 
+"""
+Histogram plots for absorber/non-absorber redshifts.
+"""
 absorberBinArray = np.linspace(.65, 1.7, 10)
 nonAbsorberBinArray = np.linspace(.65, 1.7, 10)
 plt.hist(absorberRedshift, bins=absorberBinArray, density=True, histtype='step', label='MgII Detection (%i)' %len(absorberRedshift))
