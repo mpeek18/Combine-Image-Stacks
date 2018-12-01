@@ -363,7 +363,7 @@ with Gaussian blur applied.
 def reduceMeanImageStack(imageAbsorb, imageNonAbsorb):
     absorber = fits.getdata(imageAbsorb)
     nonAbsorber = fits.getdata(imageNonAbsorb)
-    reduced = abs(absorber - nonAbsorber)
+    reduced = absorber - nonAbsorber
     fits.writeto('Reduced_Mean.fits', reduced, overwrite=True)
     
     plt.clf()
@@ -397,7 +397,7 @@ with Gaussian blur applied.
 def reduceMedianImageStack(imageAbsorb, imageNonAbsorb):
     absorber = fits.getdata(imageAbsorb)
     nonAbsorber = fits.getdata(imageNonAbsorb)
-    reduced = abs(absorber - nonAbsorber)
+    reduced = absorber - nonAbsorber
     fits.writeto('Reduced_Median.fits', reduced, overwrite=True)
     
     plt.clf()
@@ -431,7 +431,7 @@ with Gaussian blur applied.
 def reduceStandardImageStack(imageAbsorb, imageNonAbsorb):
     absorber = fits.getdata(imageAbsorb)
     nonAbsorber = fits.getdata(imageNonAbsorb)
-    reduced = abs(absorber - nonAbsorber)
+    reduced = absorber - nonAbsorber
     fits.writeto('Reduced_Standard.fits', reduced, overwrite=True)
     
     plt.clf()
