@@ -3,10 +3,9 @@
 Created on Tue May 29 21:05:05 2018
 
 @author: Matthew Peek
-Last Modified: 23 November 2018
+Last Modified: 16 December 2018
 All Fields Image Stack
 """
-import math
 import numpy as np
 from scipy import stats
 from astropy.io import ascii
@@ -455,35 +454,22 @@ def reduceStandardImageStack(imageAbsorb, imageNonAbsorb):
     print ("Substract Standard Images Complete!")
 #End reduceStandardImageStack function  
     
-"""
-def brightnessProfile(imageName, redshift, wavelength):
+
+def brightnessProfile(imageName):
     image = fits.open(imageName)
     newData, header = image[0].data, image[0].header
-    imageHeight = header['NAXIS2']
-    hAlphaWavelength = 6563 #Angstroms
-    xAxisMin = 0
-    xAxisMax = 0
-    
-    hAlphaGal = hAlphaWavelength * (redshift+1)
-    print ("H-Alpha:", hAlphaGal)
-    for i in range(0, len(wavelength)):
-        if (abs(wavelength[i] - hAlphaGal) < 800):
-            if (xAxisMin == 0):
-                xAxisMin = i
-            else:
-                xAxisMax = i
-            #print ("H-Alpha Wavelength: ", wavelength[m], " Index: ", m)
-        print ("XMIN ", xAxisMin)
-        print ("XMAX ", xAxisMax)
-        print()       
-    newImage = newData[:,xAxisMin:xAxisMax]
+    print (header)
+    height = header['NAXIS2']
+    width = header['NAXIS1']
+    image.close()
     
     #Begin placing aperture and annulus
-    xAxis = (xAxisMax - xAxisMin) / 2 #Center point X-axis
-    yAxis = imageHeight / 2             #Center point Y-axis
-    positions = [(xAxis, yAxis)]      #Center point plotted
+    xAxis = (width) / 2             #Center point X-axis
+    yAxis = height / 2              #Center point Y-axis
+    
+    positions = [(xAxis, yAxis)]    #Center point plotted
     aperture = CircularAperture(positions, r=1)
-    phot_table_ap = aperture_photometry(newImage, aperture)
+    phot_table_ap = aperture_photometry(newData, aperture)
     r_in = np.linspace(1, 11, 110)   #Inner radii per pixel
     r_out = np.linspace(2, 12, 120)  #Outer radii per pixel
     
@@ -493,7 +479,7 @@ def brightnessProfile(imageName, redshift, wavelength):
         rIn = r_in[i]
         rOut = r_out[i]
         annulus_apertures = CircularAnnulus(positions, rIn, rOut)
-        phot_table = aperture_photometry(newImage, annulus_apertures)
+        phot_table = aperture_photometry(newData, annulus_apertures)
         fluxArray.append(phot_table['aperture_sum'] / annulus_apertures.area())
         rMean = (rOut + rIn) / 2
         radArray.append(rMean)
@@ -502,9 +488,51 @@ def brightnessProfile(imageName, redshift, wavelength):
     #Plot flux as radius increases
     plt.clf()
     plt.plot(radArray, fluxArray)
-    plt.show()          
-"""    
+    plt.show()     
 
+    fluxFrac = []
+    percentSum = 0
+    for f in fluxArray:
+        percentSum += f
+        fluxFrac.append(percentSum / sumFlux)
+    
+    #Find the radius at 50% enclosed
+    radius50 = 1.0
+    for i in range(0, len(fluxFrac)):
+        if (fluxFrac[i] < .50):
+            radius50 += 1/10       #Radius 50% enclosed
+    print ("50 percent enclosed:", radius50)
+    
+    #Find the radius at 90% encolsed
+    radius90 = 1.0
+    for i in range(0, len(fluxFrac)):
+        if (fluxFrac[i] < .90):
+            radius90 += 1/10       #Radius 90% enclosed
+    print ("90 percent enclosed:", radius90)
+    
+    """
+    #Gaussian Blur
+    imgBlur = ndimage.gaussian_filter(newData, sigma=(2,2), order=0)
+    plt.imshow(imgBlur)
+    plt.savefig('Annuli_' + imageName + '.png', dpi=100)
+    plt.subplots_adjust(right=2.0)
+    plt.subplots_adjust(top=1.0)
+    plt.show()
+    """
+    
+    fig = plt.figure()
+    ax = fig.add_subplot(1,1,1)
+    circle50 = plt.Circle((xAxis, yAxis), radius=radius50, color='m', fill=False, lw=2)
+    circle90 = plt.Circle((xAxis, yAxis), radius=radius90, color='r', fill=False, lw=2)
+    plt.imshow(newData, cmap='gray')
+    ax.add_patch(circle50) #50% enclosed
+    ax.add_patch(circle90) #90% enclosed
+    #ax.text(left, top, galRedshift, horizontalalignment='left', verticalalignment='top', fontsize=12, color='red')
+    #ax.text(left, bottom, hFlux, horizontalalignment='left', verticalalignment='bottom', fontsize=14, color='green')
+    plt.savefig('Annuli_' + imageName + '.png', dpi=100)
+    plt.show()     
+#End brightnessProfile function
+    
     
 # =============================================================================
 # Read in field absorber files for plots with selected columns
@@ -623,6 +651,19 @@ stackStandardNonAbsorb(fileListStandardNonAbsorb)
 reduceMeanImageStack('Stacked_Image_Mean_Absorb.fits', 'Stacked_Image_Mean_NonAbsorb.fits')
 reduceMedianImageStack('Stacked_Image_Median_Absorb.fits', 'Stacked_Image_Median_NonAbsorb.fits')
 reduceStandardImageStack('Stacked_Image_Standard_Absorb.fits', 'Stacked_Image_Standard_NonAbsorb.fits')
+
+# =============================================================================
+# Measure brightness profile of stacked images.
+# =============================================================================
+brightnessProfile('Stacked_Image_All.fits')
+brightnessProfile('Stacked_Image_Mean_Absorb.fits')
+brightnessProfile('Stacked_Image_Mean_NonAbsorb.fits')
+brightnessProfile('Stacked_Image_Mean_All.fits')
+brightnessProfile('Stacked_Image_Median_Absorb.fits')
+brightnessProfile('Stacked_Image_Median_Nonabsorb.fits')
+brightnessProfile('Stacked_Image_Median_All.fits')
+brightnessProfile('Stacked_Image_Standard_Absorb.fits')
+brightnessProfile('Stacked_Image_Standard_Nonabsorb.fits')
 
 # =============================================================================
 # Begin section for ks statistics and plots.
