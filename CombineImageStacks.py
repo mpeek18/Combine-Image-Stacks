@@ -3,7 +3,7 @@
 Created on Tue May 29 21:05:05 2018
 
 @author: Matthew Peek
-Last Modified: 16 December 2018
+Last Modified: 30 December 2018
 All Fields Image Stack
 """
 import numpy as np
@@ -34,20 +34,20 @@ def stackAll(fileListAll):
     
     plt.clf()
     plt.imshow(imageStack)
-    plt.savefig('Stacked_Image_All', dpi=100)
-    plt.subplots_adjust(right=2.0)
-    plt.subplots_adjust(top=1.0)
+    #plt.subplots_adjust(right=2.0)
+    #plt.subplots_adjust(top=1.0)
     plt.colorbar()
+    plt.savefig('Stacked_Image_All', dpi=100)
     plt.show()
     
     #Gaussian Blur
     plt.clf()
     betterImage = ndimage.gaussian_filter(imageStack, sigma=(2,2), order=0)
     plt.imshow(betterImage)
-    plt.savefig('Stacked_Image_All_Blur', dpi=100)
-    plt.subplots_adjust(right=2.0)
-    plt.subplots_adjust(top=1.0)
+    #plt.subplots_adjust(right=2.0)
+    #plt.subplots_adjust(top=1.0)
     plt.colorbar()
+    plt.savefig('Stacked_Image_All_Blur', dpi=100)
     plt.show()
     
     print ("StackAll Function Complete!", '\n')
@@ -72,20 +72,20 @@ def stackMeanAll(fileListMeanAll):
     
     plt.clf()
     plt.imshow(meanImage)
-    plt.savefig('Stacked_Image_Mean_All', dpi=100)
-    plt.subplots_adjust(right=2.0)
-    plt.subplots_adjust(top=1.0)
+    #plt.subplots_adjust(right=2.0)
+    #plt.subplots_adjust(top=1.0)
     plt.colorbar()
+    plt.savefig('Stacked_Image_Mean_All', dpi=100)
     plt.show()
     
     #Gaussian Blur
     plt.clf()
     betterImage = ndimage.gaussian_filter(meanImage, sigma=(2,2), order=0)
     plt.imshow(betterImage)
-    plt.savefig('Stacked_Image_Mean_All_Blur', dpi=100)
-    plt.subplots_adjust(right=2.0)
-    plt.subplots_adjust(top=1.0)
+    #plt.subplots_adjust(right=2.0)
+    #plt.subplots_adjust(top=1.0)
     plt.colorbar()
+    plt.savefig('Stacked_Image_Mean_All_Blur', dpi=100)
     plt.show()
     
     print ("stackMeanAll Function Complete!", '\n')
@@ -109,20 +109,20 @@ def stackMedianAll(fileListMedianAll):
     
     plt.clf()
     plt.imshow(medianImage)
-    plt.savefig('Stacked_Image_Median_All', dpi=100)
-    plt.subplots_adjust(right=2.0)
-    plt.subplots_adjust(top=1.0)
+    #plt.subplots_adjust(right=2.0)
+    #plt.subplots_adjust(top=1.0)
     plt.colorbar()
+    plt.savefig('Stacked_Image_Median_All', dpi=100)
     plt.show()
     
     #Gaussian Blur
     plt.clf()
     betterImage = ndimage.gaussian_filter(medianImage, sigma=(2,2), order=0)
     plt.imshow(betterImage)
-    plt.savefig('Stacked_Image_Median_All_Blur', dpi=100)
-    plt.subplots_adjust(right=2.0)
-    plt.subplots_adjust(top=1.0)
+    #plt.subplots_adjust(right=2.0)
+    #plt.subplots_adjust(top=1.0)
     plt.colorbar()
+    plt.savefig('Stacked_Image_Median_All_Blur', dpi=100)
     plt.show()
     
     print ("stackMedianAll Function Complete!")
@@ -146,20 +146,20 @@ def stackMeanAbsorb(fileListMeanAbsorb):
     
     plt.clf()
     plt.imshow(meanAbsorbImage)
-    plt.savefig('Stacked_Image_Mean_Absorb', dpi=100)
-    plt.subplots_adjust(right=2.0)
-    plt.subplots_adjust(top=1.0)
+    #plt.subplots_adjust(right=2.0)
+    #plt.subplots_adjust(top=1.0)
     plt.colorbar()
+    plt.savefig('Stacked_Image_Mean_Absorb', dpi=100)
     plt.show()
     
     #Gaussian Blur
     plt.clf()
     betterImage = ndimage.gaussian_filter(meanAbsorbImage, sigma=(2,2), order=0)
     plt.imshow(betterImage)
-    plt.savefig('Stacked_Image_Mean_Absorb_Blur', dpi=100)
-    plt.subplots_adjust(right=2.0)
-    plt.subplots_adjust(top=1.0)
+    #plt.subplots_adjust(right=2.0)
+    #plt.subplots_adjust(top=1.0)
     plt.colorbar()
+    plt.savefig('Stacked_Image_Mean_Absorb_Blur', dpi=100)
     plt.show()
     
     print ("stackMeanAbsorb Function Complete!")
@@ -184,20 +184,20 @@ def stackMeanNonAbsorb(fileListMeanNonAbsorb):
     
     plt.clf()
     plt.imshow(meanNonAbsorbImage)
-    plt.savefig('Stacked_Image_Mean_NonAbsorb', dpi=100)
-    plt.subplots_adjust(right=2.0)
-    plt.subplots_adjust(top=1.0)
+    #plt.subplots_adjust(right=2.0)
+    #plt.subplots_adjust(top=1.0)
     plt.colorbar()
+    plt.savefig('Stacked_Image_Mean_NonAbsorb', dpi=100)
     plt.show()
     
     #Gaussian Blur
     plt.clf()
     betterImage = ndimage.gaussian_filter(meanNonAbsorbImage, sigma=(2,2), order=0)
     plt.imshow(betterImage)
-    plt.savefig('Stacked_Image_Mean_NonAbsorb_Blur', dpi=100)
-    plt.subplots_adjust(right=2.0)
-    plt.subplots_adjust(top=1.0)
+    #plt.subplots_adjust(right=2.0)
+    #plt.subplots_adjust(top=1.0)
     plt.colorbar()
+    plt.savefig('Stacked_Image_Mean_NonAbsorb_Blur', dpi=100)
     plt.show()
     
     print ("stackMeanNonAbsorb Function Complete!")
@@ -222,20 +222,20 @@ def stackMedianAbsorb(fileListMedianAbsorb):
     
     plt.clf()
     plt.imshow(medianAbsorbImage)
-    plt.savefig('Stacked_Image_Median_Absorb', dpi=100)
-    plt.subplots_adjust(right=2.0)
-    plt.subplots_adjust(top=1.0)
+    #plt.subplots_adjust(right=2.0)
+    #plt.subplots_adjust(top=1.0)
     plt.colorbar()
+    plt.savefig('Stacked_Image_Median_Absorb', dpi=100)
     plt.show()
     
     #Gaussian Blur
     plt.clf()
     betterImage = ndimage.gaussian_filter(medianAbsorbImage, sigma=(2,2), order=0)
     plt.imshow(betterImage)
-    plt.savefig('Stacked_Image_Median_Absorb_Blur', dpi=100)
-    plt.subplots_adjust(right=2.0)
-    plt.subplots_adjust(top=1.0)
+    #plt.subplots_adjust(right=2.0)
+    #plt.subplots_adjust(top=1.0)
     plt.colorbar()
+    plt.savefig('Stacked_Image_Median_Absorb_Blur', dpi=100)
     plt.show()
     
     print ("stackMedianAbsorb Function Complete!")
@@ -260,8 +260,8 @@ def stackMedianNonAbsorb(fileListMedianNonAbsorb):
     plt.clf()
     plt.imshow(medianNonAbsorbImage)
     plt.savefig('Stacked_Image_Median_NonAbsorb', dpi=100)
-    plt.subplots_adjust(right=2.0)
-    plt.subplots_adjust(top=1.0)
+    #plt.subplots_adjust(right=2.0)
+    #plt.subplots_adjust(top=1.0)
     plt.colorbar()
     plt.show()
     
@@ -269,10 +269,10 @@ def stackMedianNonAbsorb(fileListMedianNonAbsorb):
     plt.clf()
     betterImage = ndimage.gaussian_filter(medianNonAbsorbImage, sigma=(2,2), order=0)
     plt.imshow(betterImage)
-    plt.savefig('Stacked_Image_Median_NonAbsorb_Blur', dpi=100)
-    plt.subplots_adjust(right=2.0)
-    plt.subplots_adjust(top=1.0)
+    #plt.subplots_adjust(right=2.0)
+    #plt.subplots_adjust(top=1.0)
     plt.colorbar()
+    plt.savefig('Stacked_Image_Median_NonAbsorb_Blur', dpi=100)
     plt.show()
     
     print ("stackMedianNonAbsorb Function Complete!")
@@ -296,20 +296,20 @@ def stackStandardAbsorb(fileListStandardAbsorb):
     
     plt.clf()
     plt.imshow(standardAbsorbImage)
-    plt.savefig('Stacked_Image_Standard_Absorb', dpi=100)
-    plt.subplots_adjust(right=2.0)
-    plt.subplots_adjust(top=1.0)
+    #plt.subplots_adjust(right=2.0)
+    #plt.subplots_adjust(top=1.0)
     plt.colorbar()
+    plt.savefig('Stacked_Image_Standard_Absorb', dpi=100)
     plt.show()
     
     #Gaussian Blur
     plt.clf()
     betterImage = ndimage.gaussian_filter(standardAbsorbImage, sigma=(2,2), order=0)
     plt.imshow(betterImage)
-    plt.savefig('Stacked_Image_Standard_Absorb_Blur', dpi=100)
-    plt.subplots_adjust(right=2.0)
-    plt.subplots_adjust(top=1.0)
+    #plt.subplots_adjust(right=2.0)
+    #plt.subplots_adjust(top=1.0)
     plt.colorbar()
+    plt.savefig('Stacked_Image_Standard_Absorb_Blur', dpi=100)
     plt.show()
     
     print ("stackStandardAbsorb Function Complete!")
@@ -333,20 +333,20 @@ def stackStandardNonAbsorb(fileListStandardNonAbsorb):
     
     plt.clf()
     plt.imshow(standardNonAbsorbImage)
-    plt.savefig('Stacked_Image_Standard_NonAbsorb', dpi=100)
-    plt.subplots_adjust(right=2.0)
-    plt.subplots_adjust(top=1.0)
+    #plt.subplots_adjust(right=2.0)
+    #plt.subplots_adjust(top=1.0)
     plt.colorbar()
+    plt.savefig('Stacked_Image_Standard_NonAbsorb', dpi=100)
     plt.show()
     
     #Gaussian Blur
     plt.clf()
     betterImage = ndimage.gaussian_filter(standardNonAbsorbImage, sigma=(2,2), order=0)
     plt.imshow(betterImage)
-    plt.savefig('Stacked_Image_Standard_NonAbsorb_Blur', dpi=100)
-    plt.subplots_adjust(right=2.0)
-    plt.subplots_adjust(top=1.0)
+    #plt.subplots_adjust(right=2.0)
+    #plt.subplots_adjust(top=1.0)
     plt.colorbar()
+    plt.savefig('Stacked_Image_Standard_NonAbsorb_Blur', dpi=100)
     plt.show()
     
     print ("stackStandardNonAbsorb Function Complete!")
@@ -367,20 +367,20 @@ def reduceMeanImageStack(imageAbsorb, imageNonAbsorb):
     
     plt.clf()
     plt.imshow(reduced)
-    plt.savefig('Reduced_Mean', dpi=100)
-    plt.subplots_adjust(right=2.0)
-    plt.subplots_adjust(top=1.0)
+    #plt.subplots_adjust(right=2.0)
+    #plt.subplots_adjust(top=1.0)
     plt.colorbar()
+    plt.savefig('Reduced_Mean', dpi=100)
     plt.show()
 
     #Gaussian Blur
     plt.clf()
     betterImage = ndimage.gaussian_filter(reduced, sigma=(2,2), order=0)
     plt.imshow(betterImage)
-    plt.savefig('Reduced_Mean_Blur', dpi=100)
-    plt.subplots_adjust(right=2.0)
-    plt.subplots_adjust(top=1.0)
+    #plt.subplots_adjust(right=2.0)
+    #plt.subplots_adjust(top=1.0)
     plt.colorbar()
+    plt.savefig('Reduced_Mean_Blur', dpi=100)
     plt.show()
     
     print ("Substract Mean Images Complete!")
@@ -401,20 +401,20 @@ def reduceMedianImageStack(imageAbsorb, imageNonAbsorb):
     
     plt.clf()
     plt.imshow(reduced)
-    plt.savefig('Reduced_Median', dpi=100)
-    plt.subplots_adjust(right=2.0)
-    plt.subplots_adjust(top=1.0)
+    #plt.subplots_adjust(right=2.0)
+    #plt.subplots_adjust(top=1.0)
     plt.colorbar()
+    plt.savefig('Reduced_Median', dpi=100)
     plt.show()
 
     #Gaussian Blur
     plt.clf()
     betterImage = ndimage.gaussian_filter(reduced, sigma=(2,2), order=0)
     plt.imshow(betterImage)
-    plt.savefig('Reduced_Median_Blur', dpi=100)
-    plt.subplots_adjust(right=2.0)
-    plt.subplots_adjust(top=1.0)
+    #plt.subplots_adjust(right=2.0)
+    #plt.subplots_adjust(top=1.0)
     plt.colorbar()
+    plt.savefig('Reduced_Median_Blur', dpi=100)
     plt.show()
     
     print ("Substract Median Images Complete!")
@@ -435,20 +435,20 @@ def reduceStandardImageStack(imageAbsorb, imageNonAbsorb):
     
     plt.clf()
     plt.imshow(reduced)
-    plt.savefig('Reduced_Standard', dpi=100)
-    plt.subplots_adjust(right=2.0)
-    plt.subplots_adjust(top=1.0)
+    #plt.subplots_adjust(right=2.0)
+    #plt.subplots_adjust(top=1.0)
     plt.colorbar()
+    plt.savefig('Reduced_Standard', dpi=100)
     plt.show()
 
     #Gaussian Blur
     plt.clf()
     betterImage = ndimage.gaussian_filter(reduced, sigma=(2,2), order=0)
     plt.imshow(betterImage)
-    plt.savefig('Reduced_Standard_Blur', dpi=100)
-    plt.subplots_adjust(right=2.0)
-    plt.subplots_adjust(top=1.0)
+    #plt.subplots_adjust(right=2.0)
+    #plt.subplots_adjust(top=1.0)
     plt.colorbar()
+    plt.savefig('Reduced_Standard_Blur', dpi=100)
     plt.show()
     
     print ("Substract Standard Images Complete!")
@@ -458,7 +458,7 @@ def reduceStandardImageStack(imageAbsorb, imageNonAbsorb):
 def brightnessProfile(imageName):
     image = fits.open(imageName)
     newData, header = image[0].data, image[0].header
-    print (header)
+    #print (header)
     height = header['NAXIS2']
     width = header['NAXIS1']
     image.close()
@@ -487,7 +487,9 @@ def brightnessProfile(imageName):
 
     #Plot flux as radius increases
     plt.clf()
-    plt.plot(radArray, fluxArray)
+    plt.plot(radArray, fluxArray, label = imageName)
+    plt.legend()
+    plt.savefig(imageName + "_Radial_Profile.png")
     plt.show()     
 
     fluxFrac = []
